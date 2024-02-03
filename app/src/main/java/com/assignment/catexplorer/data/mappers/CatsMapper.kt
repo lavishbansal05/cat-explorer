@@ -8,6 +8,12 @@ fun CatBreed.toCatBreedEntity(): CatBreedEntity {
         id = id,
         name = name,
         description = description,
-        imageUrl = image?.url
+        imageUrl = image?.url,
+        lifeSpan = lifeSpan,
+        origin = origin,
+        temperament = temperament,
+        childFriendly = childFriendly,
+        intelligence = intelligence,
+        affectionLevel = affectionLevel
     )
 }
