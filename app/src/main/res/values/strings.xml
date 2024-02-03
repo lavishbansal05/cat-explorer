@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Cat Explorer</string>
+    <string name="cat_detail_error_msg"> "Error loading screen, please try again later"</string>
+    <string name="lifespan">Lifespan</string>
+    <string name="origin">Origin</string>
+    <string name="temperament">Temperament</string>
+    <string name="child_friendly">Child Friendly</string>
+    <string name="intelligence">Intelligence</string>
+    <string name="affection_level">Affection Level</string>
 </resources>
+
+
+

@@ -17,4 +17,10 @@ interface CatsDao {
 
     @Query("DELETE FROM cats_table")
     suspend fun clearCats()
+
+    @Query("SELECT * FROM cats_table WHERE id = :id  LIMIT 1")
+    suspend fun getCatBreedDetail(id: String): CatBreedEntity
+
+    @Query("SELECT MAX(modifiedAt) FROM cats_table")
+    suspend fun getLastModifiedTS() : Long?
 }
