@@ -4,14 +4,15 @@ import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.room.Room
 import com.assignment.catexplorer.data.local.CatBreedEntity
 import com.assignment.catexplorer.data.local.CatsDatabase
 import com.assignment.catexplorer.data.remote.CatsRemoteMediator
-//import com.assignment.catexplorer.data.remote.CatsRemoteMediator
 import com.assignment.catexplorer.data.remote.CatsService
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -46,12 +47,15 @@ public class AppModule constructor(private val context: Context) {
     @OptIn(ExperimentalPagingApi::class)
     @Provides
     @Singleton
-    fun provideCatBreedsPager(
+    fun provideCatBreedsPagerFlow(
         catsDatabase: CatsDatabase,
         catsService: CatsService,
-    ): Pager<Int, CatBreedEntity> {
+    ): Flow<PagingData<CatBreedEntity>> {
         return Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = CatsRemoteMediator.PAGE_LIMIT,
+                initialLoadSize = CatsRemoteMediator.PAGE_LIMIT
+            ),
             remoteMediator = CatsRemoteMediator(
                 catsDatabase = catsDatabase,
                 catsService = catsService
@@ -59,6 +63,6 @@ public class AppModule constructor(private val context: Context) {
             pagingSourceFactory = {
                 catsDatabase.dao.getCatsPagingSource()
             }
-        )
+        ).flow
     }
 }

@@ -9,6 +9,5 @@ import javax.inject.Singleton
 @Singleton
 interface AppComponent {
     fun catBreedsViewModelFactory(): CatBreedsViewModelFactory
-
     fun inject(activity: MainActivity)
 }
