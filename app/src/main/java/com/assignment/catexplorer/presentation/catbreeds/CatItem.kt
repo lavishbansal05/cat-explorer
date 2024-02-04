@@ -18,8 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.assignment.catexplorer.data.local.CatBreedEntity
 import com.assignment.catexplorer.R
+import com.assignment.catexplorer.domain.model.CatBreedEntity
 
 @Composable
 fun CatItem(

@@ -21,7 +21,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -37,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.assignment.catexplorer.R
-import com.assignment.catexplorer.data.local.CatBreedEntity
+import com.assignment.catexplorer.domain.model.CatBreedEntity
 
 
 @Composable
@@ -77,7 +76,7 @@ fun CatDetailsScreen(
                 is CatBreedDetailState.Error -> {
                     Toast.makeText(
                         LocalContext.current,
-                        stringResource(id = R.string.cat_detail_error_msg),
+                        catDetailsState.error ?: stringResource(id = R.string.cat_detail_error_msg),
                         Toast.LENGTH_LONG
                     ).show()
                 }

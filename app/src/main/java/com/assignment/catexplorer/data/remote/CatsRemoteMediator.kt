@@ -6,9 +6,9 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.assignment.catexplorer.data.local.CatBreedEntity
+import com.assignment.catexplorer.data.local.CatBreedDBEntity
 import com.assignment.catexplorer.data.local.CatsDatabase
-import com.assignment.catexplorer.data.mappers.toCatBreedEntity
+import com.assignment.catexplorer.data.mappers.db.toCatBreedDBEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -19,13 +19,15 @@ import java.util.concurrent.TimeUnit
 class CatsRemoteMediator(
     private val catsDatabase: CatsDatabase,
     private val catsService: CatsService,
-) : RemoteMediator<Int, CatBreedEntity>() {
+) : RemoteMediator<Int, CatBreedDBEntity>() {
 
     private var nextPage: Int? = 0
     private var totalItemsCount: Int? =null
 
     companion object {
-        const val PAGE_LIMIT = 5
+        const val PAGE_LIMIT = 10
+        const val INITIAL_LOAD_SIZE = 20
+        const val PREFETCH_DISTANCE = 2
         private const val PAGINATION_CURRENT_PAGE = "pagination-page"
         private const val TOTAL_ITEMS_COUNT = "pagination-count"
     }
@@ -52,7 +54,7 @@ class CatsRemoteMediator(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, CatBreedEntity>,
+        state: PagingState<Int, CatBreedDBEntity>,
     ): MediatorResult {
         Log.d("LBTEST", "load called:: loadtype::${loadType}")
         return try {
@@ -90,7 +92,7 @@ class CatsRemoteMediator(
                             catsDatabase.dao.clearCats()
                         }
                         response.body()?.map {
-                            it.toCatBreedEntity().apply { modifiedAt = System.currentTimeMillis() }
+                            it.toCatBreedDBEntity().apply { modifiedAt = System.currentTimeMillis() }
                         }?.let { catsEntities ->
                             catsDatabase.dao.upsertCats(catsEntities)
                         }
@@ -116,7 +118,7 @@ class CatsRemoteMediator(
         }
     }
 
-    fun isTotalItemCountExceeded(): Boolean? {
+    private fun isTotalItemCountExceeded(): Boolean? {
         return totalItemsCount?.let { totalItems ->
             (nextPage ?: 0) * PAGE_LIMIT > totalItems
         }.also {

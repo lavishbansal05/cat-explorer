@@ -1,11 +1,6 @@
-package com.assignment.catexplorer.data.local
+package com.assignment.catexplorer.domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
-@Entity(tableName = "cats_table")
 data class CatBreedEntity(
-    @PrimaryKey
     val id: String,
     val name: String?,
     val description: String?,
@@ -16,5 +11,4 @@ data class CatBreedEntity(
     val childFriendly: Int?,
     val intelligence: Int?,
     val affectionLevel: Int?,
-    var modifiedAt: Long? = null
 )

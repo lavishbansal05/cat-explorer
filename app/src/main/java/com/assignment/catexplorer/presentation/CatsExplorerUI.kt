@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
-import com.assignment.catexplorer.data.local.CatBreedEntity
+import com.assignment.catexplorer.domain.model.CatBreedEntity
 import com.assignment.catexplorer.presentation.catdetails.CatBreedDetailState
 import com.assignment.catexplorer.presentation.catdetails.CatDetailsScreen
 

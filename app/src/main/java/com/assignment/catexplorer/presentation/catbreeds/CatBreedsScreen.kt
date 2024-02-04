@@ -22,11 +22,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.assignment.catexplorer.data.local.CatBreedEntity
 import com.assignment.catexplorer.presentation.catbreeds.CatItem
-import androidx.paging.compose.items
 import androidx.paging.compose.itemsIndexed
 import com.assignment.catexplorer.R
+import com.assignment.catexplorer.domain.model.CatBreedEntity
 
 
 @Composable

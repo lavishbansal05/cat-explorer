@@ -1,14 +1,14 @@
-package com.assignment.catexplorer.data.mappers
+package com.assignment.catexplorer.data.mappers.domain
 
-import com.assignment.catexplorer.data.local.CatBreedEntity
-import com.assignment.catexplorer.data.remote.models.CatBreed
+import com.assignment.catexplorer.data.local.CatBreedDBEntity
+import com.assignment.catexplorer.domain.model.CatBreedEntity
 
-fun CatBreed.toCatBreedEntity(): CatBreedEntity {
+fun CatBreedDBEntity.toCatBreedEntity(): CatBreedEntity {
     return CatBreedEntity(
         id = id,
         name = name,
         description = description,
-        imageUrl = image?.url,
+        imageUrl = imageUrl,
         lifeSpan = lifeSpan,
         origin = origin,
         temperament = temperament,

@@ -1,4 +1,4 @@
-package com.assignment.catexplorer.ui.theme
+package com.assignment.catexplorer.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package com.assignment.catexplorer.ui.theme
+package com.assignment.catexplorer.presentation.ui.theme
 
 import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,11 +15,9 @@ private val DarkColorPalette = darkColors(
     onBackground = LightPrimary,
     primary = LightPrimary,
     secondary = LightSecondary
-
 )
 
 private val LightColorPalette = lightColors(
-
     background = Color.White,
     surface = Color.White,
     onSurface = DarkPrimary,

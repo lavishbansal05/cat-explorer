@@ -4,9 +4,9 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [CatBreedEntity::class],
+    entities = [CatBreedDBEntity::class],
     version = 1,
-    exportSchema = false //TODO: LAVISH remove
+    exportSchema = false //TODO: LAVISH CHECK
 )
 abstract class CatsDatabase : RoomDatabase() {
     abstract val dao: CatsDao
