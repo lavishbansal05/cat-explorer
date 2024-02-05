@@ -26,7 +26,7 @@ class CatsRemoteMediator(
 
     companion object {
         const val PAGE_LIMIT = 10
-        const val INITIAL_LOAD_SIZE = 20
+        const val INITIAL_LOAD_SIZE = 30
         const val PREFETCH_DISTANCE = 2
         private const val PAGINATION_CURRENT_PAGE = "pagination-page"
         private const val TOTAL_ITEMS_COUNT = "pagination-count"

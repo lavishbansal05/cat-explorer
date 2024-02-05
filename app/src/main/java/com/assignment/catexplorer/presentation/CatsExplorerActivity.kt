@@ -6,9 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.assignment.catexplorer.di.CatsModule
-import com.assignment.catexplorer.di.CatBreedsViewModelFactory
-import com.assignment.catexplorer.di.DaggerCatsComponent
+import com.assignment.catexplorer.MyApplication
+import com.assignment.catexplorer.presentation.di.vmfactory.CatBreedsViewModelFactory
 import com.assignment.catexplorer.presentation.ui.theme.CatExplorerTheme
 import javax.inject.Inject
 
@@ -21,10 +20,7 @@ class CatsExplorerActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val appComponent =
-            DaggerCatsComponent.builder().catsModule(CatsModule(context = this.applicationContext))
-                .build()
-        appComponent.inject(this)
+        (applicationContext as MyApplication).appComponent.inject(this)
         catsExplorerViewModel =
             ViewModelProvider(this, catBreedsViewModelFactory)[CatsExplorerViewModel::class.java]
 

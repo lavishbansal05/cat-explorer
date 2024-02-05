@@ -14,4 +14,6 @@ class GetCatBreedsFlowUseCase @Inject constructor(
         return catsRepository.getCatBreedsFlow()
     }
 
+    data class Params(val pageSize: String, val preFetchDistance: Int)
+
 }

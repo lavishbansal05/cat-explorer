@@ -9,7 +9,7 @@ import androidx.room.Upsert
 interface CatsDao {
 
     @Upsert
-    suspend fun upsertCats(beers: List<CatBreedDBEntity>)
+    suspend fun upsertCats(cats: List<CatBreedDBEntity>)
 
     @Query("SELECT * FROM cats_table")
     fun getCatsPagingSource(): PagingSource<Int, CatBreedDBEntity>

@@ -1,4 +1,4 @@
-package com.assignment.catexplorer.di
+package com.assignment.catexplorer.data.di
 
 import com.assignment.catexplorer.data.CatsRepositoryImpl
 import com.assignment.catexplorer.domain.CatsRepository

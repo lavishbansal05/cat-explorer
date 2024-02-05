@@ -8,4 +8,5 @@ interface CatsRepository {
     fun getCatBreedsFlow(): Flow<PagingData<CatBreedEntity>>
 
     suspend  fun getCatBreedDetail(id: String): CatBreedEntity
+
 }

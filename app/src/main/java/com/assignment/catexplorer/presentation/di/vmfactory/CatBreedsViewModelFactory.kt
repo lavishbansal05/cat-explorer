@@ -1,4 +1,4 @@
-package com.assignment.catexplorer.di
+package com.assignment.catexplorer.presentation.di.vmfactory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
