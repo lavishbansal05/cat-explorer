@@ -15,6 +15,8 @@ The app follows the MVVM (Model-View-ViewModel) architecture pattern, ensuring a
 - Ease of testing, as business logic is isolated from external dependencies.
 - Flexibility to adapt and extend the app's functionality without disrupting existing components.
 
+  ![Architecture Flow Diagram](architecture_flow_diagram.jpeg)
+
 ## Pagination Support
 
 To optimize the fetching of cat breed data from the server, the app leverages the Paging3 library for pagination support. Pagination ensures that data is loaded in batches, improving app performance and user experience. Benefits of pagination include:
@@ -23,6 +25,8 @@ To optimize the fetching of cat breed data from the server, the app leverages th
 - Smoother user experience, with faster loading times and reduced network usage.
 - Simplified implementation of infinite scrolling and lazy loading features.
 
+  ![Pagination Flow Diagram](paging_flow_diagram.jpeg)
+
 ## Dependency Injection
 
 For dependency injection, the app utilizes Dagger 2, a powerful and widely-used dependency injection framework for Android development. Dependency injection offers several benefits, including:
@@ -30,6 +34,8 @@ For dependency injection, the app utilizes Dagger 2, a powerful and widely-used 
 - Decoupling of dependencies, making it easier to manage and update components independently.
 - Improved code maintainability and readability, with clearer separation of concerns.
 - Enhanced testability, as dependencies can be easily replaced or mocked during unit testing.
+
+  ![DI Flow Diagram](di_flow_diagram.jpeg)
 
 ## Getting Started
 
