@@ -22,7 +22,7 @@ class CatsRemoteMediator(
 ) : RemoteMediator<Int, CatBreedDBEntity>() {
 
     private var nextPage: Int? = 0
-    private var totalItemsCount: Int? =null
+    private var totalItemsCount: Int? = null
 
     companion object {
         const val PAGE_LIMIT = 10
@@ -38,12 +38,12 @@ class CatsRemoteMediator(
             if (System.currentTimeMillis() - (catsDatabase.dao.getLastModifiedTS()
                     ?: 0) <= cacheTimeout
             ) {
-                Log.d("LBTEST", "initialise called 1")
+                Log.d("CatExplorer", "SKIP_INITIAL_REFRESH")
                 // Cached data is up-to-date, so there is no need to re-fetch
                 // from the network.
                 InitializeAction.SKIP_INITIAL_REFRESH
             } else {
-                Log.d("LBTEST", "initialise called 2")
+                Log.d("CatExplorer", "LAUNCH_INITIAL_REFRESH")
                 // Need to refresh cached data from network; returning
                 // LAUNCH_INITIAL_REFRESH here will also block RemoteMediator's
                 // APPEND and PREPEND from running until REFRESH succeeds.
@@ -56,7 +56,7 @@ class CatsRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, CatBreedDBEntity>,
     ): MediatorResult {
-        Log.d("LBTEST", "load called:: loadtype::${loadType}")
+        Log.d("CatExplorer", "load called:: loadtype::${loadType}")
         return try {
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 0
@@ -67,7 +67,12 @@ class CatsRemoteMediator(
                 LoadType.APPEND -> nextPage
             }
 
-            if(isTotalItemCountExceeded() == true) {
+            if (isTotalItemCountExceeded(
+                    nextPage = nextPage,
+                    totalItemsCount = totalItemsCount,
+                    pageLimit = PAGE_LIMIT
+                ) == true
+            ) {
                 return MediatorResult.Success(
                     endOfPaginationReached = true
                 )
@@ -83,8 +88,8 @@ class CatsRemoteMediator(
                     ?: nextPage?.plus(1)
                 totalItemsCount = response.headers().get(TOTAL_ITEMS_COUNT)?.toInt()
 
-                Log.d("LBTEST", "nextPage: ${nextPage}")
-                Log.d("LBTEST", "headers: ${response.headers()}")
+                Log.d("CatExplorer", "nextPage: ${nextPage}")
+                Log.d("CatExplorer", "headers: ${response.headers()}")
 
                 if (response.isSuccessful) {
                     catsDatabase.withTransaction {
@@ -92,18 +97,24 @@ class CatsRemoteMediator(
                             catsDatabase.dao.clearCats()
                         }
                         response.body()?.map {
-                            it.toCatBreedDBEntity().apply { modifiedAt = System.currentTimeMillis() }
+                            it.toCatBreedDBEntity()
+                                .apply { modifiedAt = System.currentTimeMillis() }
                         }?.let { catsEntities ->
                             catsDatabase.dao.upsertCats(catsEntities)
                         }
 
                     }
                     Log.d(
-                        "LBTEST",
+                        "CatExplorer",
                         "end of pagination reached: ${response.body()?.isEmpty() == true}"
                     )
                     MediatorResult.Success(
-                        endOfPaginationReached = isTotalItemCountExceeded() ?: (response.body()?.isEmpty() == true)
+                        endOfPaginationReached = isTotalItemCountExceeded(
+                            nextPage = nextPage,
+                            totalItemsCount = totalItemsCount,
+                            pageLimit = PAGE_LIMIT
+                        ) ?: (response.body()
+                            ?.isEmpty() == true)
                     )
                 } else {
                     MediatorResult.Error(Throwable(response.errorBody().toString()))
@@ -118,11 +129,11 @@ class CatsRemoteMediator(
         }
     }
 
-    private fun isTotalItemCountExceeded(): Boolean? {
+    fun isTotalItemCountExceeded(totalItemsCount: Int?, pageLimit: Int, nextPage: Int?): Boolean? {
         return totalItemsCount?.let { totalItems ->
-            (nextPage ?: 0) * PAGE_LIMIT > totalItems
+            (nextPage ?: 0) * pageLimit > totalItems
         }.also {
-            Log.d("LBTEST", "isTotalItemCountExceeded ${it}")
+            Log.d("CatExplorer", "isTotalItemCountExceeded ${it}")
         }
     }
 }
