@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import com.assignment.catexplorer.data.local.CatsDatabase
 import com.assignment.catexplorer.data.remote.CatsService
+import com.assignment.catexplorer.data.remote.interceptors.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -23,6 +25,7 @@ class CatsDataModule constructor(private val context: Context) {
         return Retrofit.Builder()
             .baseUrl(CatsService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(OkHttpClient.Builder().addInterceptor(HeaderInterceptor()).build())
             .build()
             .create(CatsService::class.java)
     }

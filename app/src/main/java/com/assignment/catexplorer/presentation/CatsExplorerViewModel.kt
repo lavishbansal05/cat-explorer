@@ -2,6 +2,7 @@ package com.assignment.catexplorer.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.assignment.catexplorer.domain.model.Response
 import com.assignment.catexplorer.domain.usecase.GetCatBreedDetailUseCase
 import com.assignment.catexplorer.domain.usecase.GetCatBreedsFlowUseCase
@@ -21,6 +22,8 @@ class CatsExplorerViewModel(
 
     val catBreedDetailFlow = _catBreedDetailFlow.asStateFlow()
 
+    val catBreedsFlow = getCatBreedsFlowUseCase.invoke().cachedIn(viewModelScope)
+
     fun fetchCatBreedDetail(id: String) {
         viewModelScope.launch {
             when (val response =
@@ -39,6 +42,4 @@ class CatsExplorerViewModel(
             }
         }
     }
-
-    fun getCatsPagingDataFlow() = getCatBreedsFlowUseCase.invoke()
 }

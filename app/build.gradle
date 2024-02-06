@@ -15,6 +15,13 @@ android {
         versionCode 1
         versionName "1.0"
 
+        // Get the CAT API key from local.properties
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        // Setting API keys in BuildConfig
+        buildConfigField "String", "CATS_API_KEY", "\"${properties.getProperty("CATS_API_KEY")}\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -86,8 +93,8 @@ dependencies {
     implementation "androidx.room:room-paging:2.6.1"
 
     // Paging
-    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
-    implementation "androidx.paging:paging-compose:1.0.0-alpha18"
+    implementation "androidx.paging:paging-runtime-ktx:3.2.1"
+    implementation "androidx.paging:paging-compose:3.2.1"
 
     //Dagger
     implementation 'com.google.dagger:dagger-android:2.20'

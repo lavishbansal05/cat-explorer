@@ -27,7 +27,7 @@ class CatsExplorerActivity : ComponentActivity() {
         setContent {
             CatExplorerTheme {
                 CatsExplorerUI(
-                    lazyPagingItems = catsExplorerViewModel.getCatsPagingDataFlow().collectAsLazyPagingItems(),
+                    lazyPagingItems = catsExplorerViewModel.catBreedsFlow.collectAsLazyPagingItems(),
                     fetchCatBreedDetail = { id ->
                         catsExplorerViewModel.fetchCatBreedDetail(id = id)
                     },

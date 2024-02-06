@@ -17,13 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.itemKey
 import com.assignment.catexplorer.presentation.catbreeds.ListItem
-import androidx.paging.compose.itemsIndexed
 import com.assignment.catexplorer.R
 import com.assignment.catexplorer.domain.model.CatBreedEntity
 
@@ -63,7 +64,8 @@ fun CatsScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             if (cats.loadState.refresh is LoadState.Loading) {
                 CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
+                    color = Color.DarkGray
                 )
             } else {
                 LazyColumn(
@@ -71,9 +73,10 @@ fun CatsScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    itemsIndexed(
-                        items = cats,
-                        key = { index, item -> item.id + "$index" }) { _, item ->
+                    items(
+                        count = cats.itemCount,
+                        key = cats.itemKey { it.id }) { index ->
+                        val item = cats[index]
                         if (item != null) {
                             ListItem(
                                 id = item.id,
@@ -85,10 +88,9 @@ fun CatsScreen(
                                 onClick = onItemClick
                             )
                         }
-                    }
-                    item {
+
                         if (cats.loadState.append is LoadState.Loading) {
-                            CircularProgressIndicator()
+                            CircularProgressIndicator(color = Color.DarkGray)
                         }
                     }
                 }
