@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.assignment.catexplorer.presentation.catbreeds.CatItem
+import com.assignment.catexplorer.presentation.catbreeds.ListItem
 import androidx.paging.compose.itemsIndexed
 import com.assignment.catexplorer.R
 import com.assignment.catexplorer.domain.model.CatBreedEntity
@@ -75,8 +75,12 @@ fun CatsScreen(
                         items = cats,
                         key = { index, item -> item.id + "$index" }) { _, item ->
                         if (item != null) {
-                            CatItem(
-                                cat = item,
+                            ListItem(
+                                id = item.id,
+                                name = item.name,
+                                description = item.description,
+                                imageUrl = item.imageUrl,
+                                placeholder = R.drawable.ic_cat_placeholder,
                                 modifier = Modifier.fillMaxWidth(),
                                 onClick = onItemClick
                             )

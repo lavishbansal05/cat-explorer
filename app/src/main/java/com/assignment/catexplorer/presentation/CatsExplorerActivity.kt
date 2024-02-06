@@ -7,14 +7,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.assignment.catexplorer.MyApplication
-import com.assignment.catexplorer.presentation.di.vmfactory.CatBreedsViewModelFactory
+import com.assignment.catexplorer.presentation.di.vmfactory.CatExplorerViewModelFactory
 import com.assignment.catexplorer.presentation.ui.theme.CatExplorerTheme
 import javax.inject.Inject
 
 class CatsExplorerActivity : ComponentActivity() {
 
     @Inject
-    lateinit var catBreedsViewModelFactory: CatBreedsViewModelFactory
+    lateinit var catExplorerViewModelFactory: CatExplorerViewModelFactory
 
     private lateinit var catsExplorerViewModel: CatsExplorerViewModel
 
@@ -22,7 +22,7 @@ class CatsExplorerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         (applicationContext as MyApplication).appComponent.inject(this)
         catsExplorerViewModel =
-            ViewModelProvider(this, catBreedsViewModelFactory)[CatsExplorerViewModel::class.java]
+            ViewModelProvider(this, catExplorerViewModelFactory)[CatsExplorerViewModel::class.java]
 
         setContent {
             CatExplorerTheme {

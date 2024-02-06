@@ -7,7 +7,7 @@ import com.assignment.catexplorer.domain.usecase.GetCatBreedsFlowUseCase
 import com.assignment.catexplorer.presentation.CatsExplorerViewModel
 import javax.inject.Inject
 
-class CatBreedsViewModelFactory @Inject constructor(
+class CatExplorerViewModelFactory @Inject constructor(
     private val getCatBreedDetailUseCase: GetCatBreedDetailUseCase,
     private val getCatBreedsFlowUseCase: GetCatBreedsFlowUseCase,
 ) :

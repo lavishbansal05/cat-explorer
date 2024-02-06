@@ -1,5 +1,6 @@
 package com.assignment.catexplorer.presentation.catbreeds
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,16 +23,19 @@ import com.assignment.catexplorer.R
 import com.assignment.catexplorer.domain.model.CatBreedEntity
 
 @Composable
-fun CatItem(
-    cat: CatBreedEntity,
+fun ListItem(
     modifier: Modifier = Modifier,
+    id: String,
+    name: String?,
+    description: String?,
+    imageUrl: String?,
+    @DrawableRes placeholder: Int,
     onClick: (catId: String) -> Unit,
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth()
             .padding(16.dp)
-            .clickable { onClick(cat.id) },
+            .clickable { onClick(id) },
         elevation = 4.dp,
         shape = MaterialTheme.shapes.small,
     ) {
@@ -39,9 +43,9 @@ fun CatItem(
             modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = cat.imageUrl,
-                placeholder = painterResource(id = R.drawable.ic_cat_placeholder),
-                contentDescription = cat.name,
+                model = imageUrl,
+                placeholder = painterResource(id = placeholder),
+                contentDescription = name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(164.dp)
@@ -56,24 +60,29 @@ fun CatItem(
                     .padding(vertical = 12.dp, horizontal = 6.dp),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = cat.name.orEmpty(),
-                    style = MaterialTheme.typography.h6.copy(fontSize = 16.sp),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 4.dp),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
 
-                Text(
-                    text = cat.description.orEmpty(),
-                    style = MaterialTheme.typography.body2,
-                    modifier = Modifier.fillMaxWidth(),
-                    maxLines = 5,
-                    overflow = TextOverflow.Ellipsis
-                )
+                name?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.h6.copy(fontSize = 16.sp),
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 4.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+
+                description?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.body2,
+                        modifier = Modifier.fillMaxWidth(),
+                        maxLines = 5,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }
@@ -82,20 +91,13 @@ fun CatItem(
 @Preview
 @Composable
 fun CatItemPreview() {
-    CatItem(
-        cat = CatBreedEntity(
-            id = "1",
-            name = "Meow",
-            description = "This is a meow cat",
-            imageUrl = null,
-            lifeSpan = "5-6 years",
-            origin = "Burma",
-            temperament = "Playful",
-            childFriendly = 5,
-            intelligence = 4,
-            affectionLevel = 3
-        ),
+    ListItem(
         modifier = Modifier.fillMaxWidth(),
-        onClick = {}
+        onClick = {},
+        placeholder = R.drawable.ic_cat_placeholder,
+        id = "id",
+        name = "name",
+        description = "description",
+        imageUrl = "imageUrl"
     )
 }
