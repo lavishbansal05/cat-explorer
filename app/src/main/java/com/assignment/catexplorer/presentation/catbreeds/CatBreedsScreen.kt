@@ -6,13 +6,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -27,6 +36,7 @@ import androidx.paging.compose.itemKey
 import com.assignment.catexplorer.presentation.catbreeds.ListItem
 import com.assignment.catexplorer.R
 import com.assignment.catexplorer.domain.model.CatBreedEntity
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -62,6 +72,13 @@ fun CatsScreen(
         )
 
         Box(modifier = Modifier.fillMaxSize()) {
+
+            val listState = rememberLazyListState()
+            val showScrollToTop by remember {
+                derivedStateOf { listState.firstVisibleItemIndex > 0 }
+            }
+            val coroutineScope = rememberCoroutineScope()
+
             if (cats.loadState.refresh is LoadState.Loading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
@@ -70,6 +87,7 @@ fun CatsScreen(
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
+                    state = listState,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -92,6 +110,22 @@ fun CatsScreen(
                         if (cats.loadState.append is LoadState.Loading) {
                             CircularProgressIndicator(color = Color.DarkGray)
                         }
+                    }
+                }
+
+                if (showScrollToTop) {
+                    FloatingActionButton(
+                        onClick = {
+                            coroutineScope.launch {
+                                listState.animateScrollToItem(0)
+                            }
+                        },
+                        modifier = Modifier.align(Alignment.BottomCenter)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowUp,
+                            contentDescription = "Scroll to Top"
+                        )
                     }
                 }
             }
