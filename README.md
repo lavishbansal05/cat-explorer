@@ -4,8 +4,8 @@ The Cat Explorer application is a Jetpack Compose UI-based app designed to showc
 
 ## Features
 
-- View a list of cat breeds with their distinct features.
-- Tap on a cat breed to view detailed information about it.
+- View a list of cat breeds with their title and short description which is truncated after 5 lines.
+- Tap on a cat breed to view detailed information and distinct features of it.
 
 ## Architecture
 
