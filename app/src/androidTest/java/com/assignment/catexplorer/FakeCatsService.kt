@@ -4,7 +4,7 @@ import okhttp3.Headers.Companion.toHeaders
 import retrofit2.Response
 
 class FakeCatsService(
-    private val isPageLimitCrossed: Boolean
+    private val isEndPageReached: Boolean
 ) : CatsService {
     override suspend fun getCatBreeds(
         page: Int,
@@ -12,14 +12,14 @@ class FakeCatsService(
         order: String
     ): Response<List<CatBreed>> {
 
-        val nextPage = if (isPageLimitCrossed) {
-            "11"
+        val currPage = if (isEndPageReached) {
+            "10" //because total items are 100 and each page contains only 10 items
         } else {
             "1"
         }
 
         val mockHeaders: Map<String, String> = mapOf(
-            Pair("pagination-page", nextPage),
+            Pair("pagination-page", currPage),
             Pair("pagination-count", "100")
         )
 

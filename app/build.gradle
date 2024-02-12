@@ -110,5 +110,10 @@ dependencies {
     kapt 'com.google.dagger:dagger-android-processor:2.20'
     kapt 'com.google.dagger:dagger-compiler:2.20'
 
+    //Navigation
     implementation "androidx.navigation:navigation-compose:2.7.6"
+
+    //Mockk
+    testImplementation "io.mockk:mockk:1.13.9"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
 }

@@ -1,15 +1,14 @@
 package com.assignment.catexplorer
 
 import FakeCatsService
-import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingConfig
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.assignment.catexplorer.data.local.CatBreedDBEntity
 import com.assignment.catexplorer.data.local.CatsDatabase
 import com.assignment.catexplorer.data.remote.CatsRemoteMediator
@@ -32,7 +31,7 @@ class CatsRemoteMediatorTest {
 
     @Before
     fun createDb() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
 
         db = Room.inMemoryDatabaseBuilder(
             context, CatsDatabase::class.java
@@ -42,7 +41,8 @@ class CatsRemoteMediatorTest {
 
     @Test
     fun testMediatorSuccessWithEndPageAsFalse() = runTest {
-        catsService = FakeCatsService(isPageLimitCrossed = false)
+        catsService = FakeCatsService(isEndPageReached = false)
+
         remoteMediator = CatsRemoteMediator(
             catsDatabase = db,
             catsService = catsService
@@ -51,14 +51,16 @@ class CatsRemoteMediatorTest {
             listOf(), null, PagingConfig(10), 10
         )
 
-        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
+        val result = remoteMediator.load(LoadType.APPEND, pagingState)
+
+
         assert(result is RemoteMediator.MediatorResult.Success)
         assert((result as RemoteMediator.MediatorResult.Success).endOfPaginationReached.not())
     }
 
     @Test
     fun testMediatorSuccessWithEndPageAsTrue() = runTest {
-        catsService = FakeCatsService(isPageLimitCrossed = true)
+        catsService = FakeCatsService(isEndPageReached = true)
         remoteMediator = CatsRemoteMediator(
             catsDatabase = db,
             catsService = catsService
@@ -67,7 +69,7 @@ class CatsRemoteMediatorTest {
             listOf(), null, PagingConfig(10), 10
         )
 
-        val result = remoteMediator.load(LoadType.REFRESH, pagingState)
+        val result = remoteMediator.load(LoadType.APPEND, pagingState)
         assert(result is RemoteMediator.MediatorResult.Success)
         assert((result as RemoteMediator.MediatorResult.Success).endOfPaginationReached)
     }
@@ -81,23 +83,23 @@ class CatsRemoteMediatorTest {
         )
         // Given
         val totalItemsCount: Int? = null
-        val nextPage: Int? = 2
-        val PAGE_LIMIT = 10
+        val nextPage = 2
+        val pageLimit = 10
 
         // When
         val result = remoteMediator.isTotalItemCountExceeded(
             totalItemsCount = totalItemsCount,
             nextPage = nextPage,
-            pageLimit = PAGE_LIMIT
+            pageLimit = pageLimit
         )
 
         // Then
-        assert(null == result)
+        assert(result == null)
     }
 
     @Test
     fun whenTotalItemsCountIsLessThanNextPageMultipliedByPageLimitReturnFalse() {
-        catsService = FakeCatsService(isPageLimitCrossed = true)
+        catsService = FakeCatsService(isEndPageReached = true)
         remoteMediator = CatsRemoteMediator(
             catsDatabase = db,
             catsService = catsService
@@ -105,22 +107,22 @@ class CatsRemoteMediatorTest {
         // Given
         val totalItemsCount = 20
         val nextPage = 1
-        val PAGE_LIMIT = 10
+        val pageLimit = 10
 
         // When
         val result = remoteMediator.isTotalItemCountExceeded(
             totalItemsCount = totalItemsCount,
             nextPage = nextPage,
-            pageLimit = PAGE_LIMIT
+            pageLimit = pageLimit
         )
 
         // Then
-        assert(false == result)
+        assert(result == false)
     }
 
     @Test
     fun whenTotalItemsCountIsLessThanNextPageMultipliedByPageLimitReturnTrue() {
-        catsService = FakeCatsService(isPageLimitCrossed = true)
+        catsService = FakeCatsService(isEndPageReached = true)
         remoteMediator = CatsRemoteMediator(
             catsDatabase = db,
             catsService = catsService
@@ -129,17 +131,17 @@ class CatsRemoteMediatorTest {
         // Given
         val totalItemsCount = 20
         val nextPage = 3
-        val PAGE_LIMIT = 10
+        val pageLimit = 10
 
         // When
         val result = remoteMediator.isTotalItemCountExceeded(
             totalItemsCount = totalItemsCount,
             nextPage = nextPage,
-            pageLimit = PAGE_LIMIT
+            pageLimit = pageLimit
         )
 
         // Then
-        assert(true == result)
+        assert(result == true)
     }
 
     @After
