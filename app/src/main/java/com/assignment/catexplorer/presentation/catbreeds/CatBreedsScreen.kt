@@ -108,7 +108,9 @@ fun CatsScreen(
                         }
 
                         if (cats.loadState.append is LoadState.Loading) {
-                            CircularProgressIndicator(color = Color.DarkGray)
+                            this@LazyColumn.item {
+                                CircularProgressIndicator(color = Color.DarkGray)
+                            }
                         }
                     }
                 }

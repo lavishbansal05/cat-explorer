@@ -8,6 +8,7 @@ import com.assignment.catexplorer.data.remote.interceptors.HeaderInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -25,7 +26,14 @@ class CatsDataModule constructor(private val context: Context) {
         return Retrofit.Builder()
             .baseUrl(CatsService.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient.Builder().addInterceptor(HeaderInterceptor()).build())
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(HeaderInterceptor())
+                    .addInterceptor(HttpLoggingInterceptor().apply {
+                        setLevel(HttpLoggingInterceptor.Level.BODY)
+                    })
+                    .build()
+            )
             .build()
             .create(CatsService::class.java)
     }

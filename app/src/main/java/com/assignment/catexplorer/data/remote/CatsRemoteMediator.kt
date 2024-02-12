@@ -27,7 +27,7 @@ class CatsRemoteMediator(
     companion object {
         const val PAGE_LIMIT = 10
         const val INITIAL_LOAD_SIZE = 20
-        const val PREFETCH_DISTANCE = 2
+        const val PREFETCH_DISTANCE = 10
         private const val PAGINATION_CURRENT_PAGE = "pagination-page"
         private const val TOTAL_ITEMS_COUNT = "pagination-count"
     }
@@ -56,7 +56,7 @@ class CatsRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, CatBreedDBEntity>,
     ): MediatorResult {
-        Log.d("CatExplorer", "load called:: loadtype::${loadType}")
+        Log.d("CatExplorer", "load called:: loadtype::${loadType}, pagingState: ${state.config.initialLoadSize}")
         return try {
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 0
