@@ -1,6 +1,5 @@
 package com.assignment.catexplorer
 
-import androidx.paging.PagingData
 import com.assignment.catexplorer.domain.model.CatBreedEntity
 import com.assignment.catexplorer.domain.model.GenericError
 import com.assignment.catexplorer.domain.model.Response
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.first
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -61,9 +59,6 @@ class CatsExplorerViewModelTest {
             )
         )
 
-        val pagingData: PagingData<CatBreedEntity> = mockk()
-        coEvery { getCatBreedsFlowUseCase.invoke() } returns flowOf(pagingData)
-
         coEvery {
             getCatBreedDetailUseCase.invoke(parameters = GetCatBreedDetailUseCase.Params(catId = "catId"))
         } returns responseSuccess
@@ -91,9 +86,6 @@ class CatsExplorerViewModelTest {
 
         val responseError: Response.Error<GenericError> =
             Response.Error(GenericError(errorMessage = "Something went wrong"))
-
-        val pagingData: PagingData<CatBreedEntity> = mockk()
-        coEvery { getCatBreedsFlowUseCase.invoke() } returns flowOf(pagingData)
 
         coEvery { getCatBreedDetailUseCase.invoke(any()) } returns responseError
 
