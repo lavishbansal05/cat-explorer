@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.assignment.catexplorer.R
-import com.assignment.catexplorer.domain.model.CatBreedEntity
+import com.assignment.catexplorer.presentation.ui.theme.CatExplorerTheme
 
 @Composable
 fun ListItem(
@@ -91,13 +91,15 @@ fun ListItem(
 @Preview
 @Composable
 fun CatItemPreview() {
-    ListItem(
-        modifier = Modifier.fillMaxWidth(),
-        onClick = {},
-        placeholder = R.drawable.ic_cat_placeholder,
-        id = "id",
-        name = "name",
-        description = "description",
-        imageUrl = "imageUrl"
-    )
+    CatExplorerTheme(darkTheme = true) {
+        ListItem(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {},
+            placeholder = R.drawable.ic_cat_placeholder,
+            id = "id",
+            name = "Aegan",
+            description = "Native to the greek island known as Cyclades i nthe Aegan Sea, these are natural cats..",
+            imageUrl = "imageUrl"
+        )
+    }
 }

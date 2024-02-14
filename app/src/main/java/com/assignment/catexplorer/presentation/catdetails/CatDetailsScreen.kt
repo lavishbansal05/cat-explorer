@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.assignment.catexplorer.R
 import com.assignment.catexplorer.domain.model.CatBreedEntity
+import com.assignment.catexplorer.presentation.ui.theme.CatExplorerTheme
 
 
 @Composable
@@ -208,5 +209,33 @@ fun CatDetailCell(key: String, value: String) {
 @Preview
 @Composable
 fun PreviewCatDetailCell() {
-    CatDetailCell(key = "Origin", value = "Burma")
+    CatExplorerTheme(darkTheme = true) {
+        CatDetailCell(key = "Origin", value = "Burma")
+    }
+}
+
+@Preview
+@Composable
+fun PreviewCatDetailScreen() {
+    CatExplorerTheme(darkTheme = true) {
+        CatDetailsScreen(
+            fetchCatBreedDetail = {},
+            catBreedId = "id",
+            catDetailsState = CatBreedDetailState.Loaded(
+                catBreedEntity = CatBreedEntity(
+                    id = "id",
+                    name = "name",
+                    description = "Native to the greek island known as Cyclades i nthe Aegan Sea, these are natural cats..",
+                    imageUrl = "imageUrl",
+                    lifeSpan = "2 years",
+                    origin = "India",
+                    temperament = "Friendly",
+                    childFriendly = 5,
+                    intelligence = 4,
+                    affectionLevel = 3
+                )
+            ),
+            onBack = {}
+        )
+    }
 }
