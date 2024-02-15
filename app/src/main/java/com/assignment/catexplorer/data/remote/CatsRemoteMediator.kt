@@ -30,6 +30,7 @@ class CatsRemoteMediator(
         const val PREFETCH_DISTANCE = 10
         private const val PAGINATION_CURRENT_PAGE = "pagination-page"
         private const val TOTAL_ITEMS_COUNT = "pagination-count"
+        private const val TAG = "CatExplorerApp"
     }
 
     override suspend fun initialize(): InitializeAction {
@@ -38,12 +39,12 @@ class CatsRemoteMediator(
             if (System.currentTimeMillis() - (catsDatabase.dao.getLastModifiedTS()
                     ?: 0) <= cacheTimeout
             ) {
-                Log.d("CatExplorer", "SKIP_INITIAL_REFRESH")
+                Log.d(TAG, "SKIP_INITIAL_REFRESH")
                 // Cached data is up-to-date, so there is no need to re-fetch
                 // from the network.
                 InitializeAction.SKIP_INITIAL_REFRESH
             } else {
-                Log.d("CatExplorer", "LAUNCH_INITIAL_REFRESH")
+                Log.d(TAG, "LAUNCH_INITIAL_REFRESH")
                 // Need to refresh cached data from network; returning
                 // LAUNCH_INITIAL_REFRESH here will also block RemoteMediator's
                 // APPEND and PREPEND from running until REFRESH succeeds.
@@ -56,7 +57,10 @@ class CatsRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, CatBreedDBEntity>,
     ): MediatorResult {
-        Log.d("CatExplorer", "load called:: loadtype::${loadType}, pagingState: ${state.config.initialLoadSize}")
+        Log.d(
+            TAG,
+            "load called:: loadtype::${loadType}"
+        )
         return try {
             val loadKey = when (loadType) {
                 LoadType.REFRESH -> 0
@@ -88,8 +92,8 @@ class CatsRemoteMediator(
                     ?: nextPage?.plus(1)
                 totalItemsCount = response.headers().get(TOTAL_ITEMS_COUNT)?.toInt()
 
-                Log.d("CatExplorer", "nextPage: ${nextPage}")
-                Log.d("CatExplorer", "headers: ${response.headers()}")
+                Log.d(TAG, "nextPage: ${nextPage}")
+                Log.d(TAG, "headers: ${response.headers()}")
 
                 if (response.isSuccessful) {
                     catsDatabase.withTransaction {
@@ -105,7 +109,7 @@ class CatsRemoteMediator(
 
                     }
                     Log.d(
-                        "CatExplorer",
+                        TAG,
                         "end of pagination reached: ${response.body()?.isEmpty() == true}"
                     )
                     MediatorResult.Success(
@@ -133,7 +137,7 @@ class CatsRemoteMediator(
         return totalItemsCount?.let { totalItems ->
             (nextPage ?: 0) * pageLimit > totalItems
         }.also {
-            Log.d("CatExplorer", "isTotalItemCountExceeded ${it}")
+            Log.d(TAG, "isTotalItemCountExceeded ${it}")
         }
     }
 }

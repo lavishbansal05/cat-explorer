@@ -43,7 +43,7 @@ fun ListItem(
             modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImage(
-                model = imageUrl,
+                model = imageUrl ?: placeholder ,
                 placeholder = painterResource(id = placeholder),
                 contentDescription = name,
                 contentScale = ContentScale.Crop,

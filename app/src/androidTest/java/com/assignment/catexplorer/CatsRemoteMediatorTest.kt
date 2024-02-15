@@ -48,7 +48,7 @@ class CatsRemoteMediatorTest {
             catsService = catsService
         )
         val pagingState = PagingState<Int, CatBreedDBEntity>(
-            listOf(), null, PagingConfig(10), 10
+            listOf(), null, PagingConfig(10), 0
         )
 
         val result = remoteMediator.load(LoadType.APPEND, pagingState)
